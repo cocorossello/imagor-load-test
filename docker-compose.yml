@@ -1,0 +1,38 @@
+#desplegado en pro
+version: '3'
+services:
+  imagor:
+    container_name: imagor
+    image: ghcr.io/cshum/imagor@sha256:018179c4b602370be70d412866c3a9672fa5eab694558b4646c56c70a63af0e7
+    restart: always
+    environment:
+      IMAGOR_UNSAFE: 1
+      VIPS_MAX_WIDTH: 9000
+      VIPS_MAX_HEIGHT: 9000
+      VIPS_MAX_RESOLUTION: 100000000
+      VIPS_MAX_ANIMATION_FRAMES: 1
+      FILE_STORAGE_BASE_DIR: /data/storage
+      FILE_STORAGE_EXPIRATION: 167h
+      FILE_RESULT_STORAGE_BASE_DIR: /data/result-storage
+      FILE_RESULT_STORAGE_EXPIRATION: 167h
+      IMAGOR_RESULT_STORAGE_PATH_STYLE: suffix
+      SERVER_ACCESS_LOG: 0
+    volumes:
+      - /c/data:/data
+    ports:
+      - 8088:8000
+    logging:
+      options:
+        max-size: 20m
+  imagor-delete-cache:
+    build: .
+    container_name: imagor-delete-cache
+    volumes:
+      - /c/data:/data
+    logging:
+      options:
+        max-size: 10m
+  healthcheck-image:
+    image: flashspys/nginx-static
+    volumes:
+      - ./staticimage:/static

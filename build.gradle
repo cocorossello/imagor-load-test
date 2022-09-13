@@ -1,0 +1,19 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.slf4j:slf4j-api:2.0.0"
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.4.0'
+}
+
+test {
+    useJUnitPlatform()
+}
